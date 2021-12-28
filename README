@@ -1,0 +1,7 @@
+Usage: decompose
+
+decompose will read in from the microphone and output to the speaker with
+pulseaudio. Note that in pulseaudio there is a dummy output, and the inputs of
+the form "Monitor of [output]" allow you to capture speaker output. This means
+that you can set the input for this program to the audio you want to decompose,
+set the output to the dummy output, and record the dummy output.

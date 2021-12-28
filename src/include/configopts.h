@@ -1,0 +1,2 @@
+#define PULSE 0
+//AUDIO_METHOD
