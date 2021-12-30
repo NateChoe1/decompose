@@ -23,13 +23,14 @@ Component getComponent(Moment *sound, int len, int rate, int component) {
 	return integral;
 }
 
-void modify(Moment *sound, int len, int rate, long start) {
+void modify(Moment *sound, int len, int rate) {
 	Component *newsound = calloc(len, sizeof(Component));
-	for (int i = -96; i <= 96; i += 4) {
-		double freq = 440 * pow(2, i / 12.0);
+	for (int i = -268; i <= 268; i++) {
+		double freq = 440 * pow(2, i / 96.0);
+		double newfreq = 440 * pow(2, (i) / 96.0);
 		Component comp = getComponent(sound, len, rate, freq);
 		for (int j = 0; j < len; j++) {
-			const double base = cos(freq*(start+j)*M_PI*2/rate);
+			const double base = cos(newfreq*j*M_PI*2/rate);
 			newsound[j].left += base * comp.left;
 			newsound[j].right += base * comp.right;
 		}
@@ -49,10 +50,10 @@ int main(int argc, char **argv) {
 
 	Moment *buff = malloc(sizeof(Moment) * MOMENTS);
 
-	for (long i = 0;; i += MOMENTS) {
+	for (;;) {
 		if (recvMicrophone(mic, buff, MOMENTS))
 			break;
-		modify(buff, MOMENTS, 44100, i);
+		modify(buff, MOMENTS, 44100);
 		if (sendSpeaker(speaker, buff, MOMENTS))
 			break;
 	}
